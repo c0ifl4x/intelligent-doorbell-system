@@ -1,6 +1,6 @@
-# Intelligent doorbell system
+# Intelligent home automation
 
-Intelligent Doorbell System is a flexible IoT platform built around a relay server, enabling device management from
+Intelligent home automation is a flexible IoT platform built around a relay server, enabling device management from
 anywhere in the world. Currently, the system is tailored to operate a smart doorbell, but its architecture allows for
 easy integration of new devices and features in the future.
 
@@ -10,7 +10,7 @@ easy integration of new devices and features in the future.
 ## Table of content
 
 * [System infrastructure](#system-infrastructure)
-* [Hardware](#hardware)
+* [Doorbell hardware](#doorbell-hardware)
 * [Software](#software)
 * [Hardware and software stack](#hardware-and-software-stack)
 * [Author](#author)
@@ -29,11 +29,11 @@ into physical logical state changes on GPIO pins, directly driving the relay mod
 independent component enables the delegation of business logic, database persistence, and telemetry archiving outside
 the embedded layer.
 
-## Hardware
+## Doorbell hardware
 
-[Click to open schematic in PDF format](.github/schematic/esp32c3-driver.pdf)
+[Click to open schematic in PDF format](.github/schematic/doorbell-hardware.pdf)
 
-<img src=".github/schematic/esp32c3-driver.svg" width="100%">
+<img src=".github/schematic/doorbell-hardware.svg" width="100%">
 
 The physical hardware is built around the RISC-V based ESP32-C3 microcontroller, chosen to fit the tight space
 constraints, and a W5500 Ethernet controller for highly stable wired connectivity. The circuit utilizes a dual-relay
@@ -44,7 +44,7 @@ shorts on the 230V live line ensures the doorbell functions normally even if the
 zone is protected by a B10 circuit breaker, and an RC snubber with a varistor is installed directly before the doorbell
 to suppress electrical arcs and destructive voltage spikes from inductive loads. The high-voltage side of the
 optocoupler is protected by an additional 0.5A glass fuse. Device status is visually indicated by LEDs corresponding to
-the Ethernet link, manual ringing, and programmatic ringing.   
+the Ethernet link, manual ringing, and programmatic ringing.
 
 ### Standalone unit (boxed)
 
@@ -55,13 +55,6 @@ the Ethernet link, manual ringing, and programmatic ringing.
 [TBD]
 
 ## Software
-
-### ESP32C3 firmware
-
-The firmware handles rapid local network communication, deliberately omitting internal intranet encryption to minimize
-transmission latency, as internet-facing security is managed by a dedicated Cloudflare tunnel. Device-to-server
-communication relies on the MQTT protocol, organized into distinct bus and registry components. Device authentication
-with the relay server is performed using the MAC address and a password.
 
 ### Java relay server with embed MQTT broker and mDNS
 

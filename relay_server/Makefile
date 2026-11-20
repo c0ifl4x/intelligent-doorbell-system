@@ -1,15 +1,17 @@
-GRADLEW = ./gradlew
+GRADLEW = ./gradlew -q --console=plain
 
-.PHONY: help run build clean test
-
+.PHONY: run
 run:
-	$(GRADLEW) run -q
+	$(GRADLEW) run
 
+.PHONY: build
 build:
 	$(GRADLEW) build
 
+.PHONY: clean
 clean:
 	$(GRADLEW) clean
 
+.PHONY: test
 test:
 	$(GRADLEW) test

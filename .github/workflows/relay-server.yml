@@ -55,9 +55,7 @@ jobs:
           RELAY_SERVER_VERSION: ${{ steps.version.outputs.sha_short }}
 
       - name: Package to JAR
-        run: |
-          ./gradlew clean --no-daemon
-          ./gradlew shadowJar --no-daemon -PcommitHash=${{ steps.version.outputs.sha_full }}
+        run: ./gradlew shadowJar --no-daemon -PcommitHash=${{ steps.version.outputs.sha_full }}
         env:
           RELAY_SERVER_VERSION: ${{ steps.version.outputs.sha_short }}
 

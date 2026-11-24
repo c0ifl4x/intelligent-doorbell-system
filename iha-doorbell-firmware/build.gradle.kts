@@ -1,5 +1,5 @@
 plugins {
-  id("pl.miloszgilga.gradle.espidf") version "2.0.2"
+  alias(libs.plugins.esp.idf)
 }
 
 espIdf {

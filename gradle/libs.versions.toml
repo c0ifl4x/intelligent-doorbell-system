@@ -1,4 +1,5 @@
 [versions]
+espIdf = "3.0.5"
 jib = "3.5.4"
 kotlin = "2.4.21"
 logback = "1.5.32"
@@ -8,6 +9,7 @@ webEmbed = "1.0.0"
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 
 [plugins]
+esp-idf = { id = "pl.miloszgilga.gradle.esp-idf", version.ref = "espIdf" }
 frontend-builder = { id = "pl.miloszgilga.gradle.frontend-builder", version.ref = "webEmbed" }
 jib = { id = "com.google.cloud.tools.jib", version.ref = "jib" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

@@ -1,6 +1,6 @@
 .PHONY: doorbell
 doorbell:
-	$(MAKE) -C iha-doorbell-firmware run
+	$(MAKE) -C iha-firmware/doorbell run
 
 .PHONY: relay-all
 relay-all:

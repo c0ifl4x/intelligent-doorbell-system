@@ -11,6 +11,7 @@ pluginManagement {
   }
 }
 
-include("iha-doorbell-firmware")
+include("iha-firmware:components")
+include("iha-firmware:doorbell")
 include("iha-relay-server:backend")
 include("iha-relay-server:ui")

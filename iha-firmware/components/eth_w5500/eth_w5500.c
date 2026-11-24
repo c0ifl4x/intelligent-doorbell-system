@@ -97,8 +97,10 @@ static esp_err_t eth_w5500_wait_for_link(uint32_t timeout_ms)
 
 // public api ----------------------------------------------------------------------------------------------------------
 
-esp_err_t eth_w5500_init(const eth_callbacks_t *callbacks)
+esp_err_t eth_w5500_init(const eth_w5500_hw_config_t *hw_config, const eth_callbacks_t *callbacks)
 {
+  if (hw_config == NULL) return ESP_ERR_INVALID_ARG;
+
   eth_context_t *ctx = malloc(sizeof(eth_context_t));
   if (ctx == NULL) return ESP_ERR_NO_MEM;
 
@@ -111,13 +113,13 @@ esp_err_t eth_w5500_init(const eth_callbacks_t *callbacks)
   ctx->netif = eth_netif;
 
   spi_bus_config_t buscfg = {
-    .miso_io_num    = ETH_SPI_MISO_GPIO,
-    .mosi_io_num    = ETH_SPI_MOSI_GPIO,
-    .sclk_io_num    = ETH_SPI_SCLK_GPIO,
+    .miso_io_num = hw_config->miso_gpio,
+    .mosi_io_num = hw_config->mosi_gpio,
+    .sclk_io_num = hw_config->sclk_gpio,
     .quadwp_io_num  = -1,
     .quadhd_io_num  = -1,
   };
-  esp_err_t err = spi_bus_initialize(ETH_SPI_HOST, &buscfg, SPI_DMA_CH_AUTO);
+  esp_err_t err = spi_bus_initialize(hw_config->spi_host, &buscfg, SPI_DMA_CH_AUTO);
   if (err != ESP_OK)
   {
     free(ctx);
@@ -125,14 +127,14 @@ esp_err_t eth_w5500_init(const eth_callbacks_t *callbacks)
   }
 
   spi_device_interface_config_t spi_devcfg = {
-      .mode = 0,
-      .clock_speed_hz = ETH_SPI_CLOCK_MHZ * 1000 * 1000,
-      .spics_io_num = ETH_SPI_CS_GPIO,
-      .queue_size = 20
+    .mode = 0,
+    .clock_speed_hz = hw_config->clock_mhz * 1000 * 1000,
+    .spics_io_num = hw_config->cs_gpio,
+    .queue_size = 20
   };
 
-  eth_w5500_config_t w5500_config = ETH_W5500_DEFAULT_CONFIG(ETH_SPI_HOST, &spi_devcfg);
-  w5500_config.base.int_gpio_num = ETH_SPI_INT_GPIO;
+  eth_w5500_config_t w5500_config = ETH_W5500_DEFAULT_CONFIG(hw_config->spi_host, &spi_devcfg);
+  w5500_config.base.int_gpio_num = hw_config->int_gpio;
 
   eth_mac_config_t mac_config = ETH_MAC_DEFAULT_CONFIG();
   esp_eth_mac_t *mac = esp_eth_mac_new_w5500(&w5500_config, &mac_config);
@@ -145,7 +147,7 @@ esp_err_t eth_w5500_init(const eth_callbacks_t *callbacks)
 
   eth_phy_config_t phy_config = ETH_PHY_DEFAULT_CONFIG();
   phy_config.phy_addr = -1;
-  phy_config.reset_gpio_num = ETH_SPI_RST_GPIO;
+  phy_config.reset_gpio_num = hw_config->rst_gpio;
 
   esp_eth_phy_t *phy = esp_eth_phy_new_w5500(&phy_config);
   if (phy == NULL)

@@ -5,19 +5,23 @@
 #include "driver/spi_master.h"
 #include "driver/gpio.h"
 
-#define ETH_SPI_HOST        SPI2_HOST     /*!< SPI Host controller instance (VSPI/HSPI). */
-#define ETH_SPI_SCLK_GPIO   GPIO_NUM_4    /*!< GPIO pin for SPI clock (SCK). */
-#define ETH_SPI_MOSI_GPIO   GPIO_NUM_6    /*!< GPIO pin for master out slave in (MOSI) - sending data to W5500. */
-#define ETH_SPI_MISO_GPIO   GPIO_NUM_5    /*!< GPIO pin for master in slave out (MISO) - receiving data from W5500. */
-#define ETH_SPI_CS_GPIO     GPIO_NUM_7    /*!< GPIO pin for chip select (CS) - active low. */
-#define ETH_SPI_INT_GPIO    GPIO_NUM_1    /*!< GPIO pin for interrupt (INT) - signals incoming packets. */
-#define ETH_SPI_CLOCK_MHZ   20            /*!< SPI Clock speed in MHz. */
-#define ETH_SPI_RST_GPIO    GPIO_NUM_3    /*!< GPIO pin for hardware reset (RST) of the W5500 chip. */
-
 /*! \brief Initial silent wait time for auto-negotiation before alerting the user. */
 #define ETH_INIT_WAIT_FOR_LINK_MS       2500
 /*! \brief Interval between consecutive link status checks during blocking wait. */
 #define ETH_INIT_LINK_CHECK_INTERVAL_MS 1000
+
+/*! \brief Hardware pinout and SPI configuration for the W5500 module. */
+typedef struct
+{
+  spi_host_device_t spi_host; /*!< SPI Host controller instance (e.g. SPI2_HOST). */
+  gpio_num_t sclk_gpio;       /*!< GPIO pin for SPI clock (SCK). */
+  gpio_num_t mosi_gpio;       /*!< GPIO pin for MOSI. */
+  gpio_num_t miso_gpio;       /*!< GPIO pin for MISO. */
+  gpio_num_t cs_gpio;         /*!< GPIO pin for Chip Select (CS). */
+  gpio_num_t int_gpio;        /*!< GPIO pin for interrupt (INT). */
+  gpio_num_t rst_gpio;        /*!< GPIO pin for hardware reset (RST). */
+  uint8_t clock_mhz;          /*!< SPI clock speed in MHz. */
+} eth_w5500_hw_config_t;
 
 /*! \brief Callbacks for Ethernet events. */
 typedef struct
@@ -36,13 +40,14 @@ typedef void (*eth_link_wait_cb_t)(bool state);
  *
  * Sets up SPI bus, MAC, PHY, and attaches the network interface glue. Configures IP from DHCP.
  *
+ * \param hw_config Hardware pinout and SPI configuration for the W5500 module.
  * \param callbacks Event handlers for link status and packet activity.
  *
  * \retval ESP_OK         If hardware initialized successfully.
  * \retval ESP_ERR_NO_MEM If no heap memory available.
  * \retval ESP_FAIL       On hardware initialization failure.
  */
-esp_err_t eth_w5500_init(const eth_callbacks_t *callbacks);
+esp_err_t eth_w5500_init(const eth_w5500_hw_config_t *hw_config, const eth_callbacks_t *callbacks);
 
 /*! \brief Blocks system execution until a physical Ethernet link is established.
  *

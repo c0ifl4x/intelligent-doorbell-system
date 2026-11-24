@@ -163,7 +163,9 @@ esp_err_t mqtt_bus_init(const mqtt_bus_config_t *config)
   s_mqtt_queue = xQueueCreate(MQTT_QUEUE_SIZE, sizeof(mqtt_msg_t));
   if (s_mqtt_queue == NULL) return ESP_ERR_NO_MEM;
 
-  xTaskCreate(mqtt_process_task, "mqtt_process_task", 4096, NULL, 5, NULL);
+  uint32_t stack_size = (config->task_stack > 0) ? config->task_stack : MQTT_DEFAULT_TASK_STACK;
+  UBaseType_t task_priority = (config->task_priority > 0) ? config->task_priority : MQTT_DEFAULT_TASK_PRIORITY;
+  xTaskCreate(mqtt_process_task, "mqtt_process_task", stack_size, NULL, task_priority, NULL);
 
   char mqtt_user[13], mqtt_pass[65];
   generate_mqtt_credentials(config->auth_salt, mqtt_user, mqtt_pass);

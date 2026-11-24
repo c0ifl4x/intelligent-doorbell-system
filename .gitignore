@@ -3,14 +3,14 @@
 .kotlin/
 build/
 
-iha-*-firmware/build/
-iha-*-firmware/managed_components/
-iha-*-firmware/sdkconfig
-iha-*-firmware/sdkconfig.old
+iha-*firmware/**/build/
+iha-*firmware/**/managed_components/
+iha-*firmware/**/sdkconfig
+iha-*firmware/**/sdkconfig.old
 
-iha-*-server/backend/build
-iha-*-server/backend/data
-iha-*-server/backend/*.db
+iha-*server/backend/build
+iha-*server/backend/data
+iha-*server/backend/*.db
 
 iha-*-server/ui/.svelte-kit
 iha-*-server/ui/node_modules

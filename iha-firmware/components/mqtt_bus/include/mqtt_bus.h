@@ -2,13 +2,30 @@
 #define MQTT_BUS_H_
 
 #include <stdbool.h>
+#include <stdint.h>
 
 #include "esp_err.h"
 #include "cJSON.h"
 
-#define MQTT_QUEUE_SIZE 10          /*!< Max messages in the queue waiting to be processed. */
-#define MQTT_TOPIC_NAME_MAX 64      /*!< Max length of the MQTT topic string. */
-#define MAX_MQTT_SUBSCRIPTIONS 20   /*!< Max number of registered topics in the router. */
+#ifndef MQTT_QUEUE_SIZE
+#define MQTT_QUEUE_SIZE 10 /*!< Max messages in the queue waiting to be processed. */
+#endif
+
+#ifndef MQTT_TOPIC_NAME_MAX
+#define MQTT_TOPIC_NAME_MAX 64 /*!< Max length of the MQTT topic string. */
+#endif
+
+#ifndef MAX_MQTT_SUBSCRIPTIONS
+#define MAX_MQTT_SUBSCRIPTIONS 20 /*!< Max number of registered topics in the router. */
+#endif
+
+#ifndef MQTT_DEFAULT_TASK_STACK
+#define MQTT_DEFAULT_TASK_STACK 4096 /*!< FreeRTOS task stack size. */
+#endif
+
+#ifndef MQTT_DEFAULT_TASK_PRIORITY
+#define MQTT_DEFAULT_TASK_PRIORITY 5 /*!< FreeRTOS task priority. */
+#endif
 
 /*! \brief Callback for processing an incoming MQTT message on a specific topic.
  *
@@ -22,6 +39,8 @@ typedef struct
 {
   const char *broker_uri; /*!< URI of the MQTT broker ("mqtt://192.168.1.100:1883"). */
   const char *auth_salt;  /*!< Secret salt used for Zero-Touch provisioning password generation. */
+  uint32_t task_stack;    /*!< Optional FreeRTOS task stack size (0 = MQTT_DEFAULT_TASK_STACK). */
+  uint8_t task_priority;  /*!< Optional FreeRTOS task priority (0 = MQTT_DEFAULT_TASK_PRIORITY). */
 } mqtt_bus_config_t;
 
 /*! \brief Initializes the MQTT bus.

@@ -1,4 +1,4 @@
 ROOT_DIR := ../../
-MODULE   := :firmware:sensor-node
+MODULE   := :iha-firmware:doorbell
 
 include $(ROOT_DIR)mk/esp-idf.mk

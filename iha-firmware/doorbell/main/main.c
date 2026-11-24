@@ -1,4 +1,5 @@
 #include "app_state.h"
+#include "board_config.h"
 #include "cyclic_task.h"
 #include "doorbell_ctrl.h"
 #include "env_sensor.h"
@@ -64,11 +65,21 @@ void app_main(void)
   CHECK_CRITICAL(esp_event_loop_create_default(), "EventLoop init fail");
 
   // init ethernet
+  eth_w5500_hw_config_t eth_hw = {
+    .spi_host  = BOARD_ETH_SPI_HOST,
+    .sclk_gpio = BOARD_ETH_SCLK_GPIO,
+    .mosi_gpio = BOARD_ETH_MOSI_GPIO,
+    .miso_gpio = BOARD_ETH_MISO_GPIO,
+    .cs_gpio   = BOARD_ETH_CS_GPIO,
+    .int_gpio  = BOARD_ETH_INT_GPIO,
+    .rst_gpio  = BOARD_ETH_RST_GPIO,
+    .clock_mhz = BOARD_ETH_CLOCK_MHZ,
+  };
   eth_callbacks_t eth_callbacks = {
     .on_link_state_changed  = sys_ind_led_eth_set_link,
     .on_packet_received     = sys_ind_led_eth_packet_activity,
   };
-  CHECK_CRITICAL(eth_w5500_init(&eth_callbacks), "Ethernet init fail");
+  CHECK_CRITICAL(eth_w5500_init(&eth_hw, &eth_callbacks), "Ethernet init fail");
   eth_w5500_force_link_blocking(sys_ind_led_eth_set_link);
 
   // init mdns service and wait for IPv4 address

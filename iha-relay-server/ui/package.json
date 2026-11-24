@@ -24,6 +24,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-svelte": "^3.24.1",
     "globals": "^16.5.0",
+    "jiti": "^2.7.0",
     "prettier": "^3.10.1",
     "prettier-plugin-svelte": "^3.5.2",
     "svelte": "^5.58.0",

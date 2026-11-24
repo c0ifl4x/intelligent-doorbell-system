@@ -20,7 +20,7 @@ export default defineConfig(
     }
   },
   {
-    files: ['**/*.svelte', '**/*.svelte.ts', '**/*.svelte.js'],
+    files: ['**/*.svelte', '**/*.svelte.ts'],
     languageOptions: {
       parserOptions: {
         extraFileExtensions: ['.svelte'],

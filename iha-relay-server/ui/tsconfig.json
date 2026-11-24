@@ -3,7 +3,7 @@
   "include": ["src", "test", "*"],
   "exclude": ["src/service-worker"],
   "compilerOptions": {
-    "allowJs": true,
+    "allowJs": false,
     "checkJs": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,

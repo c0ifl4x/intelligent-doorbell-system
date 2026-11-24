@@ -6,7 +6,7 @@ const config: Config & PluginConfig = {
   tabWidth: 2,
   singleQuote: true,
   trailingComma: 'none',
-  printWidth: 100,
+  printWidth: 120,
   plugins: ['prettier-plugin-svelte', '@ianvs/prettier-plugin-sort-imports'],
   overrides: [
     {

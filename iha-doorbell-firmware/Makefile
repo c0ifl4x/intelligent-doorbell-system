@@ -1,3 +1,4 @@
-MODULE := :iha-doorbell-firmware
+ROOT_DIR := ../../
+MODULE   := :firmware:sensor-node
 
-include ../Makefile.firmware
+include $(ROOT_DIR)mk/esp-idf.mk

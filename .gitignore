@@ -1,14 +1,19 @@
-esp32c3_firmware/build/
-esp32c3_firmware/managed_components/
-esp32c3_firmware/sdkconfig
-esp32c3_firmware/sdkconfig.old
+.idea/
+.gradle/
+.kotlin/
+build/
 
-relay_server/.bin
-relay_server/.gradle
-relay_server/build/
-relay_server/data/
-relay_server/out/
-relay_server/*.db*
+iha-*-firmware/build/
+iha-*-firmware/managed_components/
+iha-*-firmware/sdkconfig
+iha-*-firmware/sdkconfig.old
+
+iha-*-server/backend/build
+iha-*-server/backend/data
+iha-*-server/backend/*.db
+
+iha-*-server/ui/.svelte-kit
+iha-*-server/ui/node_modules
+iha-*-server/ui/build
 
 .DS_Store
-.env

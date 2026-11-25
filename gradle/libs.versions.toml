@@ -1,12 +1,42 @@
 [versions]
 espIdf = "3.2.0"
+flyway = "13.13.0"
+javalin = "7.3.0"
+jackson = "3.3.0"
+jdbi = "3.55.0"
 jib = "3.5.4"
+jmdns = "3.6.5"
+julToSlf4j = "2.0.20"
+junit = "6.1.3"
+mockk = "1.14.12"
+moquette = "0.18.7"
+mqttPaho = "1.2.5"
+kotest = "6.2.7"
 kotlin = "2.4.21"
-logback = "1.5.32"
-webEmbed = "1.0.0"
+kotlinLogging = "7.0.3"
+logback = "1.6.8"
+sqlite = "3.54.1.0"
+webEmbed = "1.0.1"
 
 [libraries]
+flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
+javalin = { module = "io.javalin:javalin", version.ref = "javalin" }
+jackson-kotlin = { module = "tools.jackson.module:jackson-module-kotlin", version.ref = "jackson" }
+jdbi-core = { module = "org.jdbi:jdbi3-core", version.ref = "jdbi" }
+jdbi-kotlin = { module = "org.jdbi:jdbi3-kotlin", version.ref = "jdbi" }
+jdbi-sqlobject = { module = "org.jdbi:jdbi3-kotlin-sqlobject", version.ref = "jdbi" }
+jmdns = { module = "org.jmdns:jmdns", version.ref = "jmdns" }
+jul-to-slf4j = { module = "org.slf4j:jul-to-slf4j", version.ref = "julToSlf4j" }
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-platform = { module = "org.junit.platform:junit-platform-launcher" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+moquette-broker = { module = "de.fraunhofer.iosb.io.moquette:moquette-broker", version.ref = "moquette" }
+mqtt-paho = { module = "org.eclipse.paho:org.eclipse.paho.client.mqttv3", version.ref = "mqttPaho" }
+kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlinLogging" }
+sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "sqlite" }
 
 [plugins]
 esp-idf = { id = "pl.miloszgilga.gradle.esp-idf", version.ref = "espIdf" }

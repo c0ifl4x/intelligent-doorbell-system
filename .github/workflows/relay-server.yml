@@ -5,23 +5,13 @@ on:
     branches:
       - master
     paths:
-      - ".github/workflows/relay-server.yml"
-      - "relay_server/**"
+      - '.github/workflows/relay-server.yml'
+      - 'iha-relay-server/**'
   workflow_dispatch:
-    inputs:
-      version:
-        description: "Enter the version in format X.X.X"
-        required: false
-        default: 'latest'
-        type: string
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: ./relay_server
 
     permissions:
       contents: read
@@ -34,9 +24,11 @@ jobs:
       - name: Set up JDK 21
         uses: actions/setup-java@v6
         with:
-          java-version: "21"
-          distribution: "adopt"
-          cache: "gradle"
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
 
       - name: Determinate build version
         id: version
@@ -44,41 +36,14 @@ jobs:
           echo "sha_full=${{ github.sha }}" >> $GITHUB_OUTPUT
           echo "sha_short=$(echo "${{ github.sha }}" | cut -c1-7)" >> $GITHUB_OUTPUT
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
       - name: Run tests
-        run: |
-          ./gradlew clean --no-daemon
-          ./gradlew test --no-daemon -PcommitHash=${{ steps.version.outputs.sha_full }}
+        run: ./gradlew :iha-relay-server:backend:test --no-daemon -PcommitHash=${{ steps.version.outputs.sha_full }}
         env:
-          RELAY_SERVER_VERSION: ${{ steps.version.outputs.sha_short }}
+          RELEASE_VERSION: ${{ steps.version.outputs.sha_short }}
 
-      - name: Package to JAR
-        run: ./gradlew shadowJar --no-daemon -PcommitHash=${{ steps.version.outputs.sha_full }}
+      - name: Build and push multi-arch Docker image with Jib
+        run: ./gradlew :iha-relay-server:backend:jib --no-daemon -PcommitHash=${{ steps.version.outputs.sha_full }}
         env:
-          RELAY_SERVER_VERSION: ${{ steps.version.outputs.sha_short }}
-
-      - name: Copy JAR file into docker directory
-        run: |
-          mv .bin/relay_server.jar docker/relay_server.jar
-          rm -rf .bin
-
-      - name: Set up builder
-        uses: docker/setup-buildx-action@v4
-
-      - name: Log in to Docker repository
-        uses: docker/login-action@v4
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build the Docker image
-        uses: docker/build-push-action@v7
-        with:
-          context: ./relay_server
-          file: ./relay_server/Dockerfile.pipeline
-          push: true
-          tags: ghcr.io/milosz08/intelligent-doorbell-relay-server:${{ inputs.version || 'latest' }}
-          platforms: linux/amd64,linux/arm64
+          RELEASE_VERSION: ${{ steps.version.outputs.sha_short }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -56,16 +56,9 @@ the Ethernet link, manual ringing, and programmatic ringing.
 
 ## Software
 
-### Java relay server with embed MQTT broker and mDNS
+### Kotlin relay server with embed MQTT broker and mDNS
 
-The relay server is developed in Java, leveraging the lightweight Jetty HTTP server and Jersey for JAX-WS and JAX-RS
-implementations to ensure a minimal footprint. Primary communication between IoT modules and the server is handled via
-MQTT. Real-time communication between end clients and the server, including live dashboard updates, is powered by
-WebSockets. To keep the payload overhead minimal, the WebSocket structure is deeply optimized using custom opcodes and
-bitwise shifts. For database object mapping, MyBatis was selected over the heavier Hibernate framework due to the low
-complexity of the system's entities and relationships. Additionally, an integrated mDNS server continuously broadcasts
-the MQTT broker's address to all end devices on the local network, streamlining setup and removing the need to hardcode
-the server's IP into every IoT module.
+[TBD]
 
 ### Multi-platform client
 

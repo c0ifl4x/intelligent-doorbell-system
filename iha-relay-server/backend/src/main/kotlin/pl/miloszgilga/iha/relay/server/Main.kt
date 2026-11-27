@@ -16,8 +16,8 @@ import pl.miloszgilga.iha.relay.server.security.permissionManagerOf
 import pl.miloszgilga.iha.relay.server.ws.WsSessionRegistry
 
 fun main() {
-  SLF4JBridgeHandler.removeHandlersForRootLogger();
-  SLF4JBridgeHandler.install();
+  SLF4JBridgeHandler.removeHandlersForRootLogger()
+  SLF4JBridgeHandler.install()
 
   LifecycleManager.runSafely {
     val permissionManager = permissionManagerOf<Permission>()

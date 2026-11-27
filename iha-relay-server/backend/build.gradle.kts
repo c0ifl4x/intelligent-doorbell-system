@@ -33,7 +33,9 @@ dependencies {
   implementation(libs.jul.to.slf4j)
   implementation(libs.kotlin.logging)
   implementation(libs.logback.classic)
-  implementation(libs.moquette.broker)
+  implementation(libs.moquette.broker) {
+    exclude(group = "org.slf4j", module = "slf4j-reload4j")
+  }
 
   testImplementation(platform(libs.junit.bom))
   testImplementation(libs.junit.jupiter)
